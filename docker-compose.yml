@@ -1,0 +1,27 @@
+services:
+  carmodel-api:
+    image: carmodel-api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "4500:3000"
+
+  postgres:
+    image: postgres:17.5
+    container_name: postgres-carmodel
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234567890
+      POSTGRES_DB: CarmodelDB
+    ports:
+      - "5870:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      - car-network
+    restart: unless-stopped
+
+networks:
+  car-network:
+    driver: bridge

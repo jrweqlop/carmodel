@@ -1,0 +1,6 @@
+services:
+  carmodel:
+    image: carmodel
+    build:
+      context: .
+      dockerfile: ./Dockerfile
