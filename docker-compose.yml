@@ -33,6 +33,22 @@ services:
       - car-network
     restart: unless-stopped
 
+  websetting:
+    build: ./websetting
+    image: carmodel-web-settingpi
+    container_name: web-settingpi
+    platform: linux/amd64
+    restart: always
+    ports:
+      - "3500:3500"
+    networks:
+      - car-network
+    depends_on:
+      - postgres
+    environment:
+      - NEXT_PUBLIC_API=http://192.168.1.2:4500/api/v1
+      - PORT=3500
+
 networks:
   car-network:
     driver: bridge
