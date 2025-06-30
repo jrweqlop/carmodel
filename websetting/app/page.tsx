@@ -1,11 +1,12 @@
-import React from 'react'
+import MainPage from '@/src/components/page/MainPage'
 
-const page = () => {
+const Page = () => {
+
   return (
     <>
-    test
+      <MainPage />
     </>
   )
 }
 
-export default page
+export default Page
