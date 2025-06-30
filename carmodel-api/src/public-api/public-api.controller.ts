@@ -3,7 +3,7 @@ import { PublicApiService } from './public-api.service';
 import { CreatePublicApiDto } from './dto/create-public-api.dto';
 import { UpdatePublicApiDto } from './dto/update-public-api.dto';
 import { Prisma } from '@prisma/client';
-import { CustomView } from 'src/type/customType';
+import { CustomBrand, CustomView } from 'src/type/customType';
 
 @Controller('public-api')
 export class PublicApiController {
@@ -42,6 +42,22 @@ export class PublicApiController {
     })
     // console.log(format)
     return format
+  }
+
+  @Get('dev')
+  async GetDev(): Promise<CustomBrand[]> {
+    const orderBy: Prisma.BrandOrderByWithRelationInput = {
+      id: 'asc'
+    }
+    const include: Prisma.BrandInclude = {
+      ModelGroup: {
+        include: {
+          CarModel: true
+        }
+      }
+    }
+    const result = await this.publicApiService.findAll({ orderBy, include }) as CustomBrand[]
+    return result
   }
 
 }
