@@ -1,11 +1,22 @@
 services:
   carmodel-api:
+    build: ./carmodel-api
     image: carmodel-api
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+    container_name: api-carmodel
+    platform: linux/amd64
+    restart: always
     ports:
-      - "4500:3000"
+      - "4500:3500"
+    networks:
+      - car-network
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://postgres:1234567890@postgres:5432/CarmodelDB?schema=public
+      - PORT=3500
+      # - DATABASE_URL=postgresql://postgres:1234567890@bookingdb:5432/bookingdb?schema=public
+    volumes:
+      - ./public:/app/public
 
   postgres:
     image: postgres:17.5

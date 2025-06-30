@@ -1,4 +1,9 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateCarModelDto } from './create-car-model.dto';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateCarModelDto extends PartialType(CreateCarModelDto) {}
+export class UpdateCarModelDto {
+    @ApiProperty({ type: String })
+    name: string
+
+    // @ApiProperty({ type: String })
+    // imagePath: string
+}

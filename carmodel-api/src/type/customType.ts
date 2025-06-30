@@ -1,3 +1,5 @@
+import { CarModel } from "@prisma/client";
+
 export interface CustomView {
     brand: string;
     model: {
@@ -6,4 +8,11 @@ export interface CustomView {
             path: string;
         }[];
     }[];
+}
+
+
+export interface CarmodelView extends CarModel {
+    modelGroup: {
+        code: string
+    }
 }
