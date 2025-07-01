@@ -1,3 +1,18 @@
+interface BrandDefault {
+    id: number;
+    updatedAt: Date;
+    createdAt: Date;
+    name: string;
+}
+
+interface ModelGroupDefault {
+    id: number;
+    code: string;
+    brandId: number;
+    updatedAt: Date;
+    createdAt: Date;
+}
+
 interface Brand {
     id: number;
     updatedAt: Date;

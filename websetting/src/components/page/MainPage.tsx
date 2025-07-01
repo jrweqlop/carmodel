@@ -8,9 +8,8 @@ import ViewSetting from './Dev/ViewSetting'
 interface MainPageProps {
 }
 
-const MainPage: FC<MainPageProps> = ({ }) => {
 
-    const url = process.env.NEXT_PUBLIC_API || 'http://localhost:4500/api/v1'
+const MainPage: FC<MainPageProps> = ({ }) => {
 
     const [data, setData] = useState<Brand[]>([])
     const [jsonView, setJsonView] = useState<JsonViewData[]>([])
@@ -29,10 +28,10 @@ const MainPage: FC<MainPageProps> = ({ }) => {
     return (
         <>
             <Grid container>
-                <Grid size={6} overflow={'auto'} height={'100dvh'}>
-                    <ViewSetting data={data} url={url} />
+                <Grid size={6} overflow={'auto'} height={'95dvh'}>
+                    <ViewSetting data={data} reload={loadData} />
                 </Grid>
-                <Grid size={6} overflow={'auto'} height={'100dvh'}>
+                <Grid size={6} overflow={'auto'} height={'95dvh'}>
                     <ViewData data={jsonView} />
                 </Grid>
             </Grid>
