@@ -82,8 +82,8 @@ const FromModelGroup: FC<FromModelGroupProps> = ({ name, type, open, onClose, on
                                             {...field}
                                             value={value ?? ''}
                                             // size='small'
-                                            label="Model Group Name"
-                                            placeholder='Model Group Name'
+                                            label="Model group name"
+                                            placeholder='Model group name'
                                             variant="outlined"
                                             disabled={isLoading}
                                             error={!!errors.code}

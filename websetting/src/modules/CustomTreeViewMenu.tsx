@@ -13,10 +13,11 @@ interface CustomTreeViewMenuProps {
     disableAdd?: boolean
     addColor: string
     deleteColor: string
+    disableDelete: boolean
     onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: object, status: 'delete' | 'add') => void
 }
 
-const CustomTreeViewMenu: FC<CustomTreeViewMenuProps> = ({ title, data, onClick, disableAdd,
+const CustomTreeViewMenu: FC<CustomTreeViewMenuProps> = ({ title, data, onClick, disableAdd, disableDelete,
     addColor,
     deleteColor
 }) => {
@@ -33,7 +34,7 @@ const CustomTreeViewMenu: FC<CustomTreeViewMenuProps> = ({ title, data, onClick,
                             <AddIcon fontSize="inherit" />
                         </IconButton>
                     )}
-                    <IconButton sx={{ color: deleteColor }} aria-label="delete" size='medium' onClick={(event) => {
+                    <IconButton sx={{ color: deleteColor }} disabled={disableDelete} aria-label="delete" size='medium' onClick={(event) => {
                         event.stopPropagation()
                         onClick(event, data, 'delete')
                     }}>

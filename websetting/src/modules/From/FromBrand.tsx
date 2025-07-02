@@ -87,7 +87,8 @@ const FromBrand: FC<FromBrandProps> = ({ name, type, open, data, onClose, defult
                                         <TextField
                                             {...field}
                                             value={value ?? ''}
-                                            placeholder='Name'
+                                            label='Brand name car'
+                                            placeholder='Brand name car'
                                             variant="outlined"
                                             disabled={isLoading}
                                             error={!!errors.name}

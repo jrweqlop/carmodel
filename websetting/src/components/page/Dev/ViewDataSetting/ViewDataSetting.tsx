@@ -152,16 +152,16 @@ const ViewDataSetting: FC<ViewDataSettingProps> = ({ data, onLoad }) => {
     return (
         <>
             <TreeItem itemId={data.name} label={
-                <CustomTreeViewMenu addColor={green[900]} deleteColor={orange[900]} data={data} title={data.name} onClick={handleBrandModelSetting} />
+                <CustomTreeViewMenu disableDelete={data.ModelGroup.length !== 0} addColor={green[900]} deleteColor={orange[900]} data={data} title={data.name} onClick={handleBrandModelSetting} />
             } >
                 {data.ModelGroup.map((item, indexs) => {
                     return (
                         <TreeItem itemId={item.code} key={indexs}
-                            label={<CustomTreeViewMenu addColor={green[600]} deleteColor={orange[600]} data={item} title={item.code} onClick={handleModelGroupSetting} />} >
+                            label={<CustomTreeViewMenu disableDelete={item.CarModel.length !== 0} addColor={green[600]} deleteColor={orange[600]} data={item} title={item.code} onClick={handleModelGroupSetting} />} >
                             {item.CarModel.map((itemsx) => {
                                 return (
                                     <TreeItem itemId={itemsx.name} key={itemsx.id} label={
-                                        <CustomTreeViewMenu addColor={green[300]} deleteColor={orange[300]} data={itemsx} disableAdd title={itemsx.name} onClick={handleCarModelSetting} />
+                                        <CustomTreeViewMenu disableDelete={false} addColor={green[300]} deleteColor={orange[300]} data={itemsx} disableAdd title={itemsx.name} onClick={handleCarModelSetting} />
                                     } onClick={() => setDataCarmodel(itemsx)} />
                                 )
                             })}

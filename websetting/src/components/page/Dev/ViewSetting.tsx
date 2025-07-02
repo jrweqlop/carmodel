@@ -6,7 +6,7 @@ import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView'
 import React, { FC, useState } from 'react'
 import FromBrand from '@/src/modules/From/FromBrand'
 import ViewDataSetting from './ViewDataSetting/ViewDataSetting'
-
+import AddIcon from '@mui/icons-material/Add';
 interface ViewSettingProps {
     data: Brand[]
     reload: () => void
@@ -19,8 +19,8 @@ const ViewSetting: FC<ViewSettingProps> = ({ data, reload }) => {
     return (
         <>
             <Grid container size={12}>
-                <Grid size={12}>
-                    <Button onClick={() => setAddBrand(true)}>เพิ่ม Brand</Button>
+                <Grid size={12} pb={2}>
+                    <Button variant='contained' startIcon={<AddIcon />} onClick={() => setAddBrand(true)}>เพิ่ม Brand</Button >
                 </Grid>
                 <Grid size={12}>
                     <SimpleTreeView>

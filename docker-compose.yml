@@ -46,8 +46,12 @@ services:
     depends_on:
       - postgres
     environment:
+      # - NEXT_PUBLIC_API=http://192.168.1.118:4500/api/
+      # - PORT=3000
       - NEXT_PUBLIC_API=http://192.168.1.118:4500/api/
       - PORT=3000
+      - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_cmVsZXZhbnQtbGl6YXJkLTguY2xlcmsuYWNjb3VudHMuZGV2JA
+      - CLERK_SECRET_KEY=sk_test_cKZFsxotq93rEJAnCKlMSFbFxT9IZSfZK8GUjr5aEX
 
 networks:
   car-network:
