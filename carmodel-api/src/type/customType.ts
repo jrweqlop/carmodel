@@ -24,3 +24,9 @@ export interface CustomBrand extends Brand {
 export interface CustomModelGroup extends ModelGroup {
     CarModel: CarModel[]
 }
+
+export interface User {
+    userId: number
+    username: string,
+    password: string
+}

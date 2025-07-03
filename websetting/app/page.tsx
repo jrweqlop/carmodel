@@ -1,6 +1,6 @@
 import MainPage from "@/src/components/page/MainPage"
-import { UserButton } from "@clerk/nextjs"
-
+import Avatar from "@mui/material/Avatar"
+import PersonIcon from '@mui/icons-material/Person';
 const Page = () => {
 
   return (
@@ -22,7 +22,9 @@ const Page = () => {
 
         {/* Right side: Avatar */}
         <div>
-          <UserButton />
+          <Avatar>
+            <PersonIcon />
+          </Avatar>
         </div>
       </nav>
       <MainPage />
