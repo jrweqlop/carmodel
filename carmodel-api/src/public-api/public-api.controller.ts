@@ -1,14 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, ForbiddenException } from '@nestjs/common';
+import { Controller, Get, HttpCode, ForbiddenException } from '@nestjs/common';
 import { PublicApiService } from './public-api.service';
-import { CreatePublicApiDto } from './dto/create-public-api.dto';
-import { UpdatePublicApiDto } from './dto/update-public-api.dto';
 import { Prisma } from '@prisma/client';
 import { CustomBrand, CustomView } from 'src/type/customType';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('public-api')
 export class PublicApiController {
   constructor(private readonly publicApiService: PublicApiService) { }
 
+  @Public()
   @Get()
   @HttpCode(200)
   async findAll(): Promise<CustomView[]> {
@@ -40,10 +40,10 @@ export class PublicApiController {
       }
 
     })
-    // console.log(format)
     return format
   }
 
+  @Public()
   @Get('dev')
   async GetDev(): Promise<CustomBrand[]> {
     const orderBy: Prisma.BrandOrderByWithRelationInput = {

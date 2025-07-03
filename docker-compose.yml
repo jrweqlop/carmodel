@@ -13,6 +13,7 @@ services:
       - postgres
     environment:
       - DATABASE_URL=postgresql://postgres:1234567890@postgres:5432/CarmodelDB?schema=public
+      - SECRET_KEY=aec070645fe53ee3b3763059376134f058cc337247c978add178b6ccdfb0019f
       - PORT=3500
       # - DATABASE_URL=postgresql://postgres:1234567890@bookingdb:5432/bookingdb?schema=public
     volumes:

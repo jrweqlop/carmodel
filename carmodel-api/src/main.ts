@@ -6,6 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api');
   const config = new DocumentBuilder()
+    .setTitle('Booking Example').addBearerAuth()
     .setTitle('Carmodel')
     .setDescription('Carmodel API description')
     .setVersion('1.0')

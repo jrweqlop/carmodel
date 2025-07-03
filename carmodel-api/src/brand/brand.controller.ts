@@ -2,9 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, NotFoundEx
 import { BrandService } from './brand.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
-import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Brand, Prisma } from '@prisma/client';
 
+@ApiBearerAuth()
 @ApiTags('brand')
 @Controller('brand')
 export class BrandController {

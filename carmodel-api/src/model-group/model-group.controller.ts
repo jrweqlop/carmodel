@@ -1,10 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, NotFoundException } from '@nestjs/common';
 import { ModelGroupService } from './model-group.service';
-import { ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ModelGroup, Prisma } from '@prisma/client';
 import { CreateModelGroupDto } from './dto/create-model-group.dto';
 import { UpdateModelGroupDto } from './dto/update-model-group.dto';
 
+@ApiBearerAuth()
 @ApiTags('model-group')
 @Controller('model-group')
 export class ModelGroupController {

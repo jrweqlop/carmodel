@@ -2,12 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, BadRequest
 import { CarModelService } from './car-model.service';
 import { CreateCarModelDto, uploadImageDto } from './dto/create-car-model.dto';
 import { UpdateCarModelDto } from './dto/update-car-model.dto';
-import { ApiBadRequestResponse, ApiBody, ApiConsumes, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CarModel, Prisma } from '@prisma/client';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CarmodelView } from 'src/type/customType';
 import { DeleteFileImage, FileSetting } from 'src/shared/fileSystem';
 
+@ApiBearerAuth()
 @ApiTags('car-model')
 @Controller('car-model')
 export class CarModelController {
