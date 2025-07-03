@@ -1,8 +1,8 @@
 services:
   carmodel-api:
     build: ./carmodel-api
-    image: carmodel-api
-    container_name: api-carmodel
+    image: jrweqlop/carmodel-api
+    container_name: carmodel-api
     platform: linux/amd64
     restart: always
     ports:
@@ -36,8 +36,8 @@ services:
 
   websetting:
     build: ./websetting
-    image: carmodel-web-settingpi
-    container_name: web-settingpi
+    image: jrweqlop/carmodel-web-settingpi
+    container_name: carmodel-web-settingpi
     platform: linux/amd64
     restart: always
     ports:
@@ -47,12 +47,9 @@ services:
     depends_on:
       - postgres
     environment:
-      # - NEXT_PUBLIC_API=http://192.168.1.118:4500/api/
-      # - PORT=3000
       - NEXT_PUBLIC_API=http://192.168.1.118:4500/api/
       # - PORT=3000
-      # - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_cmVsZXZhbnQtbGl6YXJkLTguY2xlcmsuYWNjb3VudHMuZGV2JA
-      # - CLERK_SECRET_KEY=sk_test_cKZFsxotq93rEJAnCKlMSFbFxT9IZSfZK8GUjr5aEX
+      # - NEXT_PUBLIC_API=http://3.107.193.60:4500/api/
 
 networks:
   car-network:

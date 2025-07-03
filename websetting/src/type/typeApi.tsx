@@ -49,3 +49,11 @@ interface JsonViewData {
         }[];
     }[];
 }
+
+interface FormData {
+    username: string
+    password: string
+};
+interface TokenApi {
+    access_token: string
+}

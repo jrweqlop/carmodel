@@ -11,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup'; // Import yupResolver
 import Box from '@mui/material/Box'
 import { instance } from '@/src/server/server'
 import Grid from '@mui/material/Grid'
+import { enqueueSnackbar } from 'notistack'
 
 const schema = yup.object().shape({
     name: yup.string().nullable().default(null)
@@ -38,13 +39,14 @@ const FromBrand: FC<FromBrandProps> = ({ name, type, open, data, onClose, defult
     })
 
     const CreateBrandApi = async (data: object): Promise<BrandDefault | null> => {
-        const result = await instance.post('brand', data).then((res) => res.data as BrandDefault).catch(() => null).finally(() => setLoad(false))
-        return result
-    }
-
-    const UpdateBrandApi = async (id: number, data: object): Promise<BrandDefault | null> => {
-        const url = `brand/${id}`
-        const result = await instance.patch(url, data).then((res) => res.data as BrandDefault).catch(() => null).finally(() => setLoad(false))
+        const value = await sessionStorage.getItem('auth_ecu') as string
+        if (value === null) return null
+        const item = JSON.parse(value) as TokenApi
+        const result = await instance.post('brand', data, {
+            headers: {
+                Authorization: `Bearer ${item.access_token}`
+            }
+        }).then((res) => res.data as BrandDefault).catch(() => null).finally(() => setLoad(false))
         return result
     }
 
@@ -52,17 +54,14 @@ const FromBrand: FC<FromBrandProps> = ({ name, type, open, data, onClose, defult
         setLoad(true)
         if (type === 'add') {
             const result = await CreateBrandApi(item)
-            if (!result) throw new Error('Cannot create brand')
-            else stateClear()
+            if (!result) {
+                enqueueSnackbar('Cannot create brand', {
+                    variant: 'error'
+                })
+                throw new Error('Cannot create brand')
+            }
         }
-
-        const { name } = item as Brand
-        if (type === 'edit' && data) {
-            const nowData = { name }
-            const result = await UpdateBrandApi(data.id, nowData)
-            if (!result) throw new Error('Cannot create brand')
-            else stateClear()
-        }
+        stateClear()
     }
 
     const stateClear = () => {

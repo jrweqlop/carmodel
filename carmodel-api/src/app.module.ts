@@ -16,7 +16,7 @@ import { AuthModule } from './auth/auth.module';
       serveRoot: '/assets/images/'
     }),
     PublicApiModule,
-    AuthModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

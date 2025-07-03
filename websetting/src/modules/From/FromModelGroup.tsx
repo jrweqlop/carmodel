@@ -11,6 +11,7 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
+import { enqueueSnackbar } from 'notistack'
 import React, { FC, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -43,19 +44,33 @@ const FromModelGroup: FC<FromModelGroupProps> = ({ name, type, open, onClose, on
     })
 
     const CreateModelGroupdApi = async (data: object): Promise<ModelGroupDefault | null> => {
-        const result = await instance.post('model-group', data).then((res) => res.data as ModelGroupDefault).catch(() => null).finally(() => setLoad(false))
+        const value = await sessionStorage.getItem('auth_ecu') as string
+        if (value === null) return null
+        const item = JSON.parse(value) as TokenApi
+        const result = await instance.post('model-group', data, {
+            headers: {
+                Authorization: `Bearer ${item.access_token}`
+            }
+        }).then((res) => res.data as ModelGroupDefault).catch(() => null)
         return result
     }
 
     const onSubmit = async (item: brandType) => {
         if (type === 'add') {
             setLoad(true)
-            const result = await CreateModelGroupdApi(item)
-            if (!result) throw new Error('Cannot create brand')
-            else {
-                stateClear()
+            const result = await CreateModelGroupdApi(item).finally(() => setLoad(false))
+            if (result) {
+                enqueueSnackbar('Success create model group', {
+                    variant: 'success'
+                })
+            } else {
+                enqueueSnackbar('Cannot create model group', {
+                    variant: 'error'
+                })
+                throw new Error('Cannot create brand')
             }
         }
+        stateClear()
     }
 
     const stateClear = () => {

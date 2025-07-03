@@ -14,6 +14,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import styled from "@emotion/styled"
 import CardMedia from "@mui/material/CardMedia"
 import { instance } from "../server/server"
+import { enqueueSnackbar } from "notistack"
 
 interface ThisDialogCarmodelProps {
     data: CarModel
@@ -40,8 +41,15 @@ const ThisDialogCarmodel: FC<ThisDialogCarmodelProps> = ({ data, url, onClose, o
     });
 
     const UploadImageCarmodelApi = async (id: number, data: object): Promise<boolean> => {
+        const value = await sessionStorage.getItem('auth_ecu') as string
+        if (value === null) return false
+        const item = JSON.parse(value) as TokenApi
         const url = `car-model/upload/${id}`
-        const result = await instance.patch(url, data).then(() => true).catch(() => false)
+        const result = await instance.patch(url, data, {
+            headers: {
+                'Authorization': `Bearer ${item.access_token}`
+            }
+        }).then(() => true).catch(() => false)
         return result
     }
 
@@ -52,8 +60,17 @@ const ThisDialogCarmodel: FC<ThisDialogCarmodelProps> = ({ data, url, onClose, o
             const formData = new FormData();
             formData.append("image", image[0]);
             const result = await UploadImageCarmodelApi(data.id, formData).finally(() => setLoad(false))
-            if (!result) throw new Error('Cannot upload image')
-            else onLoad()
+            if (!result) {
+                enqueueSnackbar('Cannot update image', {
+                    variant: 'error'
+                })
+                throw new Error('Cannot upload image')
+            } else {
+                enqueueSnackbar('Success update image', {
+                    variant: 'success'
+                })
+                onLoad()
+            }
         }
     }
 

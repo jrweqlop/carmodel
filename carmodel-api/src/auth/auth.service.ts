@@ -11,7 +11,7 @@ export class AuthService {
         {
             userId: 1,
             username: 'ecushopadmin',
-            password: 'Ecushop2017',
+            password: 'Ecushop2025',
         },
         {
             userId: 2,
@@ -24,6 +24,13 @@ export class AuthService {
         const result = await this.users.find(user => user.username === username);
         if (!result) return null
         return result
+    }
+
+    async validateUser(username: string, password: string) {
+        const result = await this.users.find((user) => user.username === username)
+        if (!result) return false
+        if (result.password === password) return true
+        return false
     }
 
     async signIn(

@@ -1,34 +1,89 @@
-import MainPage from "@/src/components/page/MainPage"
-import Avatar from "@mui/material/Avatar"
-import PersonIcon from '@mui/icons-material/Person';
+'use client'
+import FromLogin from "@/src/modules/From/FromLogin";
+import NotificationProvider from "@/src/provider/NotificationProvider";
+import { instance } from "@/src/server/server";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { redirect, RedirectType } from "next/navigation";
+import { enqueueSnackbar } from "notistack";
+import { useEffect, useState } from "react";
+
 const Page = () => {
+
+  const [error, setError] = useState<string>("");
+  const [load, setLoad] = useState<boolean>(false)
+
+  const authApi = async (data: FormData): Promise<TokenApi | null> => {
+    const result = await instance.post('auth', data).then((res) => res.data).catch(() => null)
+    return result
+  }
+
+  const onSubmit = async (data: FormData) => {
+    setLoad(true)
+    const result: TokenApi | null = await authApi(data)
+    const setSession = sessionStorage.setItem('auth_ecu', JSON.stringify(result))
+    if (result) {
+      redirect('/home', RedirectType.push)
+    } else {
+      enqueueSnackbar('username or password not match', {
+        variant: 'error'
+      })
+    }
+    setLoad(false)
+  };
+
+  const check = async () => {
+    const value = await sessionStorage.getItem('auth_ecu') as string | null
+    if (value !== null) {
+      const item = JSON.parse(value) as TokenApi
+      const result = await instance.get('auth/profile', {
+        headers: {
+          Authorization: `Bearer ${item.access_token}`
+        }
+      }).then((res) => res.data).catch(() => null)
+      if (result) {
+        redirect("/home", RedirectType.replace)
+      } else {
+        sessionStorage.removeItem('auth_ecu')
+      }
+    }
+  }
+
+  useEffect(() => {
+    check()
+  }, [])
 
   return (
     <>
-      <nav style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '0.5rem 0.5rem',
-        backgroundColor: '#f8f8f8',
-        borderBottom: '1px solid #eee'
-      }}>
-        {/* Left side: Title */}
-        <div>
-          <h1 style={{ margin: 0, fontSize: '1rem', color: '#333' }}>
-            ECU=Shop model car
-          </h1>
-        </div>
-
-        {/* Right side: Avatar */}
-        <div>
-          <Avatar>
-            <PersonIcon />
-          </Avatar>
-        </div>
-      </nav>
-      <MainPage />
-
+      <NotificationProvider>
+        {/* <body style={{ background: ' #4b4b4b' }}> */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+            maxWidth: 400,
+            margin: "0 auto",
+            padding: 4,
+            border: "1px solid #ddd",
+            borderRadius: 2,
+            boxShadow: 3,
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            ECU=Shop Carmodel
+          </Typography>
+          <FromLogin onSubmit={onSubmit} loading={load} />
+          {error && (
+            <Typography variant="body2" color="error" sx={{ mt: 2 }}>
+              {error}
+            </Typography>
+          )}
+        </Box>
+        {/* </body> */}
+      </NotificationProvider>
     </>
   )
 }

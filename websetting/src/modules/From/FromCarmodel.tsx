@@ -8,6 +8,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
+import { enqueueSnackbar } from 'notistack'
 import React, { FC, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -40,19 +41,33 @@ const FromCarmodel: FC<FromCarmodelProps> = ({ name, type, open, onClose, onLoad
     })
 
     const CreateCarModelApi = async (data: object): Promise<CarModel | null> => {
-        const result = await instance.post('car-model', data).then((res) => res.data as CarModel).catch(() => null).finally(() => setLoad(false))
+        const value = await sessionStorage.getItem('auth_ecu') as string
+        if (value === null) return null
+        const item = JSON.parse(value) as TokenApi
+        const result = await instance.post('car-model', data, {
+            headers: {
+                Authorization: `Bearer ${item.access_token}`
+            }
+        }).then((res) => res.data as CarModel).catch(() => null)
         return result
     }
 
     const onSubmit = async (item: carmodelType) => {
         if (type === 'add') {
             setLoad(true)
-            const result = await CreateCarModelApi(item)
-            if (!result) throw new Error('Cannot create brand')
-            else {
-                stateClear()
+            const result = await CreateCarModelApi(item).finally(() => setLoad(false))
+            if (result) {
+                enqueueSnackbar('Success create car mocel', {
+                    variant: 'success'
+                })
+            } else {
+                enqueueSnackbar('Cannot create car model', {
+                    variant: 'error'
+                })
+                throw new Error('Cannot create brand')
             }
         }
+        stateClear()
     }
 
     const stateClear = () => {

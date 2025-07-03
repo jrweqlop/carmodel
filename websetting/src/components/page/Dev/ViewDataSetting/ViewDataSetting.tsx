@@ -7,6 +7,7 @@ import ThisDialogCarmodel from '@/src/modules/ThisDialogCarmodel'
 import { instance } from '@/src/server/server'
 import { blue, green, orange } from '@mui/material/colors'
 import { TreeItem } from '@mui/x-tree-view/TreeItem'
+import { enqueueSnackbar } from 'notistack'
 import React, { FC, useEffect, useState } from 'react'
 
 interface ViewDataSettingProps {
@@ -34,34 +35,60 @@ const ViewDataSetting: FC<ViewDataSettingProps> = ({ data, onLoad }) => {
 
 
     const RemoveBrandApi = async (id: number): Promise<boolean> => {
+        const value = await sessionStorage.getItem('auth_ecu') as string
+        if (value === null) return false
+        const item = JSON.parse(value) as TokenApi
         const param = `brand/${id}`
-        const result = await instance.delete(param).then((res) => true).catch(() => false)
+        const result = await instance.delete(param, {
+            headers: {
+                Authorization: `Bearer ${item.access_token}`
+            }
+        }).then((res) => true).catch(() => false)
         return result
     }
 
     const RemoveModelGroupApi = async (id: number): Promise<boolean> => {
+        const value = await sessionStorage.getItem('auth_ecu') as string
+        if (value === null) return false
+        const item = JSON.parse(value) as TokenApi
         const param = `model-group/${id}`
-        const result = await instance.delete(param).then((res) => true).catch(() => false)
+        const result = await instance.delete(param, {
+            headers: {
+                Authorization: `Bearer ${item.access_token}`
+            }
+        }).then((res) => true).catch(() => false)
         return result
     }
 
     const RemoveCarmodelApi = async (id: number): Promise<boolean> => {
+        const value = await sessionStorage.getItem('auth_ecu') as string
+        if (value === null) return false
+        const item = JSON.parse(value) as TokenApi
         const param = `car-model/${id}`
-        const result = await instance.delete(param).then((res) => true).catch(() => false)
+        const result = await instance.delete(param, {
+            headers: {
+                Authorization: `Bearer ${item.access_token}`
+            }
+        }).then((res) => true).catch(() => false)
         return result
     }
-
-
 
     const handleDeleteBrand = async () => {
         setLoad(true)
         if (dataBrand) {
             const result = await RemoveBrandApi(dataBrand.id).finally(() => setLoad(false))
             if (result) {
-                stateClear()
+                enqueueSnackbar('Success remove brand', {
+                    variant: 'success'
+                })
                 onLoad()
+            } else {
+                enqueueSnackbar('Cannot remove brand', {
+                    variant: 'error'
+                })
             }
         }
+        stateClear()
     }
 
     const handleDeleteModelGroup = async () => {
@@ -69,10 +96,17 @@ const ViewDataSetting: FC<ViewDataSettingProps> = ({ data, onLoad }) => {
         if (dataModelGroup) {
             const result = await RemoveModelGroupApi(dataModelGroup.id).finally(() => setLoad(false))
             if (result) {
-                stateClear()
+                enqueueSnackbar('Success remove model group', {
+                    variant: 'success'
+                })
                 onLoad()
+            } else {
+                enqueueSnackbar('Cannot remove model group', {
+                    variant: 'error'
+                })
             }
         }
+        stateClear()
     }
 
     const handleDeleteCarmodel = async () => {
@@ -80,10 +114,17 @@ const ViewDataSetting: FC<ViewDataSettingProps> = ({ data, onLoad }) => {
         if (dataCarmodel) {
             const result = await RemoveCarmodelApi(dataCarmodel.id).finally(() => setLoad(false))
             if (result) {
-                stateClear()
+                enqueueSnackbar('Success remove car model', {
+                    variant: 'success'
+                })
                 onLoad()
+            } else {
+                enqueueSnackbar('Cannot remove car model', {
+                    variant: 'error'
+                })
             }
         }
+        stateClear()
     }
 
     const handleBrandModelSetting = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: object, status: 'delete' | 'add') => {
