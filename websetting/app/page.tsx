@@ -42,7 +42,7 @@ const Page = () => {
         }
       }).then((res) => res.data).catch(() => null)
       if (result) {
-        redirect("/home", RedirectType.replace)
+        redirect("/home", RedirectType.push)
       } else {
         sessionStorage.removeItem('auth_ecu')
       }
