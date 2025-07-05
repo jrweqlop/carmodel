@@ -17,6 +17,7 @@
     "@mui/material": "^7.1.2",
     "@mui/material-nextjs": "^7.1.1",
     "@mui/x-tree-view": "^8.6.0",
+    "@next/env": "^15.3.5",
     "@uiw/react-json-view": "^2.0.0-alpha.32",
     "axios": "^1.10.0",
     "next": "15.3.4",
