@@ -27,11 +27,11 @@ interface FromCarmodelProps {
     onClose: () => void
     onLoad: () => void
     modelData: ModelGroup
-    data?: ModelGroup
+    // data?: ModelGroup
     defultValues: carmodelType | null
 }
 
-const FromCarmodel: FC<FromCarmodelProps> = ({ name, type, open, onClose, onLoad, modelData, data, defultValues }) => {
+const FromCarmodel: FC<FromCarmodelProps> = ({ name, type, open, onClose, onLoad, modelData, defultValues }) => {
 
     const [load, setLoad] = useState<boolean>(false)
 
@@ -52,7 +52,23 @@ const FromCarmodel: FC<FromCarmodelProps> = ({ name, type, open, onClose, onLoad
         return result
     }
 
+    const CheckCarName = async (data: carmodelType) => {
+        const { name } = data
+        const checkModel = modelData['CarModel'].filter((item) => item.name === name)
+        if (checkModel.length > 0) {
+            return true
+        }
+        return false
+    }
+
     const onSubmit = async (item: carmodelType) => {
+        const check = await CheckCarName(item)
+        if (check) {
+            enqueueSnackbar('You have name car in model', {
+                variant: 'error'
+            })
+            throw new Error('Cannot create brand')
+        }
         if (type === 'add') {
             setLoad(true)
             const result = await CreateCarModelApi(item).finally(() => setLoad(false))

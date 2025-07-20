@@ -9,7 +9,7 @@ export const GetCar = async () => {
     return result
 }
 
-export const GetCarDev = async () => {
+export const GetCarDev = async (): Promise<Brand[]> => {
     const result = await instance.get('public-api/dev').then((res) => {
         return res.data
     }).catch(() => {

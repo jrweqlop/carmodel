@@ -201,7 +201,7 @@ const ViewDataSetting: FC<ViewDataSettingProps> = ({ data, onLoad }) => {
                             label={<CustomTreeViewMenu disableDelete={item.CarModel.length !== 0} addColor={green[600]} deleteColor={orange[600]} data={item} title={item.code} onClick={handleModelGroupSetting} />} >
                             {item.CarModel.map((itemsx) => {
                                 return (
-                                    <TreeItem itemId={itemsx.name} key={itemsx.id} label={
+                                    <TreeItem itemId={itemsx.id.toString()} key={itemsx.id} label={
                                         <CustomTreeViewMenu disableDelete={false} addColor={green[300]} deleteColor={orange[300]} data={itemsx} disableAdd title={itemsx.name} onClick={handleCarModelSetting} />
                                     } onClick={() => setDataCarmodel(itemsx)} />
                                 )
