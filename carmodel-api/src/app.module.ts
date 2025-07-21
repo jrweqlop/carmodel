@@ -13,7 +13,8 @@ import { AuthModule } from './auth/auth.module';
   imports: [BrandModule, ModelGroupModule, CarModelModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
-      serveRoot: '/assets/images/'
+      // serveRoot: '/assets/images/'
+      serveRoot: '/api/assets/images/'
     }),
     PublicApiModule,
     AuthModule

@@ -25,7 +25,8 @@ interface ThisDialogCarmodelProps {
 
 const ThisDialogCarmodel: FC<ThisDialogCarmodelProps> = ({ data, url, onClose, onLoad }) => {
 
-    const [images, setImages] = useState<string | null>(url.replace('/api', '').trim() + data.imagePath)
+    // const [images, setImages] = useState<string | null>(url.replace('/api', '').trim() + data.imagePath)
+    const [images, setImages] = useState<string | null>(url.replace('', '').trim() + data.imagePath)
     const [load, setLoad] = useState<boolean>(false)
 
     const VisuallyHiddenInput = styled('input')({
@@ -77,7 +78,8 @@ const ThisDialogCarmodel: FC<ThisDialogCarmodelProps> = ({ data, url, onClose, o
     const newLoadData = () => {
         setLoad(true)
         setImages(null)
-        setImages(url.replace('/api', '').trim() + data.imagePath)
+        // setImages(url.replace('/api', '').trim() + data.imagePath)
+        setImages(url.replace('', '').trim() + data.imagePath)
         setLoad(false)
     }
 
