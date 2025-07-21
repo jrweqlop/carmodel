@@ -1,5 +1,4 @@
 "use client"
-import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView'
@@ -26,14 +25,14 @@ const ViewSetting: FC<ViewSettingProps> = ({ data, reload }) => {
                     <SimpleTreeView>
                         {data.map((item, index) => {
                             return (
-                                <ViewDataSetting key={index} data={item} onLoad={reload} />
+                                <ViewDataSetting key={item.name} data={item} onLoad={reload} />
                             )
                         })}
                     </SimpleTreeView>
                 </Grid>
             </Grid>
             {addBrand && (
-                <FromBrand name='Add Brand' type='add' open={addBrand} onClose={() => setAddBrand(false)} defultValues={null} onLoad={reload} />
+                <FromBrand data={data} name='Add Brand' type='add' open={addBrand} onClose={() => setAddBrand(false)} defultValues={null} onLoad={reload} />
             )}
         </>
     )

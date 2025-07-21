@@ -12,15 +12,17 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from '@mui/material/Stack'
 import { instance } from '@/src/server/server'
-import { redirect, RedirectType } from 'next/navigation'
 import NotificationProvider from '@/src/provider/NotificationProvider'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { useRouter } from 'next/navigation'
 interface MainPageProps {
 }
 
 const MainPage: FC<MainPageProps> = ({ }) => {
 
     const matches = useMediaQuery('(min-width:600px)');
+
+    const router = useRouter()
 
     const [dataAuth, setDataAuth] = useState<boolean>(true)
 
@@ -45,7 +47,7 @@ const MainPage: FC<MainPageProps> = ({ }) => {
                 }
             }).then((res) => res.data).catch(() => null)
             if (!result) {
-                redirect("/", RedirectType.replace)
+                router.replace("/")
             }
             setDataAuth(false)
         } else {
@@ -55,7 +57,7 @@ const MainPage: FC<MainPageProps> = ({ }) => {
 
     const signOut = async () => {
         const clearValue = await sessionStorage.removeItem('auth_ecu')
-        await redirect("/", RedirectType.replace)
+        router.replace("/")
     }
 
     useEffect(() => {

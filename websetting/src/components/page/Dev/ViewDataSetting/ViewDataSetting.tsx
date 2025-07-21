@@ -5,7 +5,7 @@ import FromModelGroup from '@/src/modules/From/FromModelGroup'
 import ThisDialogAlert from '@/src/modules/ThisDialogAlert'
 import ThisDialogCarmodel from '@/src/modules/ThisDialogCarmodel'
 import { instance } from '@/src/server/server'
-import { blue, green, orange } from '@mui/material/colors'
+import { green, orange } from '@mui/material/colors'
 import { TreeItem } from '@mui/x-tree-view/TreeItem'
 import { enqueueSnackbar } from 'notistack'
 import React, { FC, useEffect, useState } from 'react'
@@ -192,12 +192,12 @@ const ViewDataSetting: FC<ViewDataSettingProps> = ({ data, onLoad }) => {
 
     return (
         <>
-            <TreeItem itemId={data.name} label={
+            <TreeItem itemId={data.name} key={data.id} label={
                 <CustomTreeViewMenu disableDelete={data.ModelGroup.length !== 0} addColor={green[900]} deleteColor={orange[900]} data={data} title={data.name} onClick={handleBrandModelSetting} />
             } >
                 {data.ModelGroup.map((item, indexs) => {
                     return (
-                        <TreeItem itemId={item.code} key={indexs}
+                        <TreeItem itemId={item.code} key={item.id}
                             label={<CustomTreeViewMenu disableDelete={item.CarModel.length !== 0} addColor={green[600]} deleteColor={orange[600]} data={item} title={item.code} onClick={handleModelGroupSetting} />} >
                             {item.CarModel.map((itemsx) => {
                                 return (

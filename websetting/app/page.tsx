@@ -4,11 +4,14 @@ import NotificationProvider from "@/src/provider/NotificationProvider";
 import { instance } from "@/src/server/server";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { redirect, RedirectType } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 
 const Page = () => {
+
+  const router = useRouter()
+
 
   const [error, setError] = useState<string>("");
   const [load, setLoad] = useState<boolean>(false)
@@ -23,13 +26,13 @@ const Page = () => {
     const result: TokenApi | null = await authApi(data)
     const setSession = sessionStorage.setItem('auth_ecu', JSON.stringify(result))
     if (result) {
-      redirect('/home', RedirectType.push)
+      router.replace("/home")
     } else {
       enqueueSnackbar('username or password not match', {
         variant: 'error'
       })
+      setLoad(false)
     }
-    setLoad(false)
   };
 
   const check = async () => {
@@ -42,11 +45,12 @@ const Page = () => {
         }
       }).then((res) => res.data).catch(() => null)
       if (result) {
-        redirect("/home", RedirectType.push)
+        router.replace("/home")
       } else {
         sessionStorage.removeItem('auth_ecu')
       }
     }
+    setLoad(false)
   }
 
   useEffect(() => {

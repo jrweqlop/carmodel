@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
 import { enqueueSnackbar } from 'notistack'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
@@ -55,7 +55,25 @@ const FromModelGroup: FC<FromModelGroupProps> = ({ name, type, open, onClose, on
         return result
     }
 
+    const checkModelGroup = async (item: object) => {
+        const { brandId, code } = item as { brandId: number, code: string }
+        const check = brandData['ModelGroup'].filter((item) => item.code === code)
+        if (check.length > 0) {
+            return true
+        }
+        return false
+    }
+
     const onSubmit = async (item: brandType) => {
+
+        const check = await checkModelGroup(item)
+        if (check) {
+            enqueueSnackbar('You have model group name', {
+                variant: 'error'
+            })
+            stateClear()
+            throw new Error('Cannot create model group')
+        }
         if (type === 'add') {
             setLoad(true)
             const result = await CreateModelGroupdApi(item).finally(() => setLoad(false))

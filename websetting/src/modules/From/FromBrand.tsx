@@ -22,7 +22,7 @@ interface brandType extends yup.InferType<typeof schema> { };
 interface FromBrandProps {
     name: string
     type: 'add' | 'edit'
-    data?: Brand
+    data: Brand[]
     open: boolean
     onClose: () => void
     onLoad: () => void
@@ -50,8 +50,25 @@ const FromBrand: FC<FromBrandProps> = ({ name, type, open, data, onClose, defult
         return result
     }
 
+    const checkBrand = async (item: object) => {
+        const { name } = item as { name: string }
+        const check = data.filter((item) => item.name === name)
+        if (check.length > 0) {
+            return true
+        }
+        return false
+    }
+
     const onSubmit = async (item: object) => {
         setLoad(true)
+        const check = await checkBrand(item)
+        if (check) {
+            enqueueSnackbar('You have brand', {
+                variant: 'error'
+            })
+            stateClear()
+            throw new Error('Cannot create brand')
+        }
         if (type === 'add') {
             const result = await CreateBrandApi(item)
             if (!result) {

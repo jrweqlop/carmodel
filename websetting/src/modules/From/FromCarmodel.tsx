@@ -67,7 +67,7 @@ const FromCarmodel: FC<FromCarmodelProps> = ({ name, type, open, onClose, onLoad
             enqueueSnackbar('You have name car in model', {
                 variant: 'error'
             })
-            throw new Error('Cannot create brand')
+            throw new Error('Cannot create carmodel')
         }
         if (type === 'add') {
             setLoad(true)
